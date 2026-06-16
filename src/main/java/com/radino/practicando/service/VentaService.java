@@ -24,7 +24,7 @@ public class VentaService {
 
         int nuevoStock = stockActual - cantidad;
 
-        // 🔥 AHORA SÍ actualizás stock correctamente
+        // AHORA SÍ actualizás stock correctamente
         productoRepo.actualizarStock(productoId, nuevoStock);
 
         // registrás la venta
