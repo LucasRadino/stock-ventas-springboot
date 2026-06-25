@@ -1,9 +1,8 @@
 package com.radino.practicando.model;
 
+public class Producto {
 
-public class Producto{
-
-    //ATRIBUTOS
+    //GETTERS Y SETTERS
     private int id;
     private String nombre;
     private double precio;
@@ -17,7 +16,7 @@ public class Producto{
         this.precio = precio;
         this.stock = stock;
     }
-    //GETTERS
+    //GETTERS Y SETTERS
     public int getId() {
         return id;
     }
@@ -30,7 +29,6 @@ public class Producto{
     public int getStock() {
         return stock;
     }
-    //SETTERS
     public void setId(int id) {
         this.id = id;
     }
@@ -43,4 +41,6 @@ public class Producto{
     public void setStock(int stock) {
         this.stock = stock;
     }
+
+
 }

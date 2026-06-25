@@ -1,40 +1,38 @@
 package com.radino.practicando.service;
 
 import com.radino.practicando.model.Producto;
-
 import com.radino.practicando.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//@Service es una anotación de Spring que le dice al framework: “esta clase es
-//un componente de la capa de servicio, creala y manejala vos automáticamente”
+//@Service le dice a Spring, esta clase es un Service. Quiero que la administres vos.
 @Service
 public class ProductoService {
 
-    @Autowired //le estás diciendo a Spring: “no crees este objeto con new, dámelo vos ya creado”
+
+    //Le estás diciendo a Spring: "Necesito un ProductoRepository. Buscalo vos y colocámelo acá."
+    @Autowired
     private ProductoRepository repo;
 
-    public void crear(Producto p) {
+    public void crearProducto(Producto p) {
         repo.crearProducto(p);
     }
 
-    public List<Producto> listar() {
+    public List<Producto> listarProductos() {
         return repo.listarProductos();
     }
 
-    public int stock(int id) {
+    public int obtenerStock(int id) {
         return repo.obtenerStock(id);
     }
 
-    public void eliminarP(int id) {
+    public void eliminarProducto(int id){
         repo.eliminarProducto(id);
     }
 
-    public void precioModificado(int id, double precio) {
-        repo.modificarPrecio(id, precio);
+    public void modificarPrecio(int id, double precioNuevo){
+        repo.modificarPrecio(id, precioNuevo);
     }
-
-
 }

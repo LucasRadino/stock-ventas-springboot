@@ -1,38 +1,49 @@
 package com.radino.practicando.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Venta {
+
     //ATRIBUTOS
     private int id;
     private int productoId;
     private int cantidad;
     private LocalDateTime fecha;
     //CONSTRUCTORES
-    public Venta() {}
-
-    public Venta(int id, int productoId, int cantidad, LocalDateTime fecha) {
-        this.id = id;
-        this.productoId = productoId;
+    public Venta() {
+    }
+    public Venta(int cantidad, LocalDateTime fecha, int id, int productoId) {
         this.cantidad = cantidad;
         this.fecha = fecha;
+        this.id = id;
+        this.productoId = productoId;
     }
-    //GETTERS
-    public int getId() {
-        return id; }
-    public int getProductoId() {
-        return productoId; }
+    //GETTERS Y SETTERS
     public int getCantidad() {
-        return cantidad; }
+        return cantidad;
+    }
     public LocalDateTime getFecha() {
-        return fecha; }
-    //SETTERS
-    public void setId(int id) {
-        this.id = id; }
-    public void setProductoId(int productoId) {
-        this.productoId = productoId; }
+        return fecha;
+    }
+    public int getId() {
+        return id;
+    }
+    public int getProductoId() {
+        return productoId;
+    }
     public void setCantidad(int cantidad) {
-        this.cantidad = cantidad; }
+        this.cantidad = cantidad;
+    }
     public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha; }
+        this.fecha = fecha;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setProductoId(int productoId) {
+        this.productoId = productoId;
+    }
+
+
 }

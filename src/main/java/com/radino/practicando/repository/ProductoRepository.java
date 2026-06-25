@@ -2,14 +2,11 @@ package com.radino.practicando.repository;
 
 import com.radino.practicando.model.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
-
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,52 +22,64 @@ public class ProductoRepository {
         jdbcTemplate.update(sql, p.getNombre(), p.getPrecio(), p.getStock());
     }
 
+
     public List<Producto> listarProductos(){
 
-        String sql = "SELECT * FROM producto";
+        String sql = "select * from producto";
 
-        //query() Se usa cuando esperás: MUCHAS filas  o una lista de objetos
+        //Un RowMapper es simplemente una clase que sabe responder:
+        //"Tengo una fila del ResultSet. ¿Cómo la convierto en un objeto Java?"
+        //ResultSet es el objeto que contiene los resultados de una consulta SQL.
         return jdbcTemplate.query(sql, new RowMapper<Producto>() {
 
-            public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+            //Spring llama automáticamente este metodo por cada fila encontrada
+            public Producto mapRow(ResultSet rs, int rowNum) throws SQLException{
 
+                //Crear el objeto Producto
                 return new Producto(
-                rs.getInt("id"),
-                rs.getString("nombre"),
-                rs.getDouble("precio"),
-                rs.getInt("stock")
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getDouble("precio"),
+                        rs.getInt("stock")
                 );
-
             }
         });
     }
 
     public int obtenerStock(int id){
 
+        // Consulta SQL para obtener el stock de un producto según su id
         String sql = "SELECT stock FROM producto WHERE id = ?";
 
-        //queryForObject() Se usa cuando esperás: UN solo valor o UNA sola fila
+        // queryForObject: 1) Ejecuta la consulta SQL; 2) Reemplaza el ? por el valor de id;
+        // 3) Obtiene un único resultado; 4) Lo convierte a Integer; 5) Lo retorna
+
         return jdbcTemplate.queryForObject(sql, Integer.class, id);
-        //"Integer.class" le dice a Spring: “el resultado que viene de SQL
-        //convertímelo a Integer” Porque el stock es un entero.
-        //Es parecido a decir: quiero que el resultado sea tipo Integer
     }
 
     public void eliminarProducto(int id){
+
         String sql = "DELETE FROM producto WHERE id = ?";
+
         jdbcTemplate.update(sql, id);
     }
 
-    public void modificarPrecio(int id, double precio){
+    public void modificarPrecio(int id, double precioNuevo){
 
         String sql = "UPDATE producto SET precio = ? WHERE id = ?";
-        jdbcTemplate.update(sql, precio, id);
+
+        jdbcTemplate.update(sql, precioNuevo, id);
     }
 
-    public void actualizarStock(int id, int stock) {
+    public void actualizarStock(int id, int nuevoStock){
+
         String sql = "UPDATE producto SET stock = ? WHERE id = ?";
-        jdbcTemplate.update(sql, stock, id);
+
+        jdbcTemplate.update(sql, nuevoStock, id);
     }
+
+
+
 
 
 }
