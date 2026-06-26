@@ -29,6 +29,7 @@ public class ProductoController {
     //Sirve para decir: “Este méodo responde a peticiones HTTP POST”
     @PostMapping("/crear")
     public void crearProducto(@RequestBody Producto p){ //Sirve para decir: “Tomá el JSON que llega en el body y convertílo a un objeto Producto”
+
         service.crearProducto(p);
     }
     //se encarga de convertir el JSON que llega en el cuerpo (body) de la petición HTTP en un objeto Java.

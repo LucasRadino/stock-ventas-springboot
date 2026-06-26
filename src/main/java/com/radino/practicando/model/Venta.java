@@ -1,6 +1,6 @@
 package com.radino.practicando.model;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 public class Venta {
@@ -13,11 +13,11 @@ public class Venta {
     //CONSTRUCTORES
     public Venta() {
     }
-    public Venta(int cantidad, LocalDateTime fecha, int id, int productoId) {
-        this.cantidad = cantidad;
-        this.fecha = fecha;
+    public Venta(int id, int productoId, int cantidad, LocalDateTime fecha) {
         this.id = id;
         this.productoId = productoId;
+        this.cantidad = cantidad;
+        this.fecha = fecha;
     }
     //GETTERS Y SETTERS
     public int getCantidad() {
@@ -44,6 +44,5 @@ public class Venta {
     public void setProductoId(int productoId) {
         this.productoId = productoId;
     }
-
 
 }

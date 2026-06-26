@@ -1,35 +1,44 @@
 package com.radino.practicando.service;
 
-
+import com.radino.practicando.model.Venta;
 import com.radino.practicando.repository.ProductoRepository;
 import com.radino.practicando.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class VentaService {
 
     @Autowired
-    private ProductoRepository produRepo;
+    VentaRepository ventaRepo;
 
     @Autowired
-    private VentaRepository ventaRepo;
+    ProductoRepository productoRepo;
 
+    public void crearVenta(Venta v){
 
+        v.setFecha(LocalDateTime.now());
 
-    public void registrarVenta(int productoId, int cantidad) {
+        int stockActual = productoRepo.obtenerStock(v.getProductoId());
 
-        int stockActual = produRepo.obtenerStock(productoId);
-
-        if(stockActual < cantidad){
+        if(v.getCantidad() > stockActual){
             throw new RuntimeException("Stock insuficiente");
         }
 
-        int nuevoStock = stockActual - cantidad;
+        int nuevoStock = stockActual - v.getCantidad();
 
-        produRepo.actualizarStock(productoId, nuevoStock);
+        productoRepo.actualizarStock(v.getProductoId(), nuevoStock);
 
-        ventaRepo.registrarVenta(productoId, cantidad);
+        ventaRepo.crearVenta(v);
+    }
+
+
+    public List<Venta> listarVentas(){
+
+        return ventaRepo.listarVentas();
     }
 
 

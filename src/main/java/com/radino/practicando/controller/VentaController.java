@@ -1,21 +1,31 @@
 package com.radino.practicando.controller;
 
+import com.radino.practicando.model.Venta;
 import com.radino.practicando.service.VentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @RestController
-@RequestMapping("/venta")
+@RequestMapping("/ventas")
 public class VentaController {
 
     @Autowired
-    private VentaService ventaService;
+    VentaService ventaService;
 
+    @PostMapping("/crearVenta")
+    public void crearVenta(@RequestBody Venta v){
 
-    //POST /venta/registrarVenta?productoId=1&cantidad=2
-    @PostMapping("/registrarVenta")
-    public void registrarVenta(@RequestParam int productoId, @RequestParam int cantidad){
-        ventaService.registrarVenta(productoId, cantidad);
+        ventaService.crearVenta(v);
+    }
+
+    @GetMapping("/listar")
+    public List<Venta> listarVentas(){
+
+        return ventaService.listarVentas();
     }
 
 }
+
