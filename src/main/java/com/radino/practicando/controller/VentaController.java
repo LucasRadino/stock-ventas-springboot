@@ -27,5 +27,24 @@ public class VentaController {
         return ventaService.listarVentas();
     }
 
+    @GetMapping("/obtenerVenta/{id}")
+    public Venta devolverVentaPorId(@PathVariable int id){
+
+        return ventaService.devolverVentaPorId(id);
+    }
+
+
+    @DeleteMapping("/eliminar/{id}")
+    public void eliminarVenta(@PathVariable int id){
+
+        ventaService.eliminarVenta(id);
+    }
+
+
+
+
+
+
+
 }
 

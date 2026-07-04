@@ -44,4 +44,34 @@ public class VentaRepository {
 
     }
 
+
+    public Venta devolverVentaPorId(int id){
+
+        String sql = "SELECT * FROM venta WHERE id = ?";
+
+        return jdbcTemplate.queryForObject(sql, new RowMapper<Venta>() {
+            @Override
+            public Venta mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Venta(
+
+                        rs.getInt("id"),
+                        rs.getInt("producto_id"),
+                        rs.getInt("cantidad"),
+                        rs.getTimestamp("fecha").toLocalDateTime()
+
+
+                );
+            }
+        }, id);
+    }
+
+    public void eliminarVenta(int id){
+
+        String sql = "DELETE FROM venta WHERE id = ?";
+
+        jdbcTemplate.update(sql, id);
+    }
+
+
+
 }

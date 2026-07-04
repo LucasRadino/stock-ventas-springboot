@@ -28,7 +28,7 @@ public class ProductoController {
 
     //Sirve para decir: “Este méodo responde a peticiones HTTP POST”
     @PostMapping("/crear")
-    public void crearProducto(@RequestBody Producto p){ //Sirve para decir: “Tomá el JSON que llega en el body y convertílo a un objeto Producto”
+    public void crearProducto(@RequestBody Producto p) { //Sirve para decir: “Tomá el JSON que llega en el body y convertílo a un objeto Producto”
 
         service.crearProducto(p);
     }
@@ -37,18 +37,18 @@ public class ProductoController {
 
     //le dice a Spring: "Cuando llegue una petición HTTP GET a la ruta /listar, ejecutá este méodo."
     @GetMapping("/listar")
-    public List<Producto> listarProductos(){
+    public List<Producto> listarProductos() {
         return service.listarProductos();
     }
 
 
     @GetMapping("/{id}/obtenerStock")
-    public int obtenerStock(@PathVariable int id){ //Tomá el valor que viene en la URL y guardalo en esta variable.
+    public int obtenerStock(@PathVariable int id) { //Tomá el valor que viene en la URL y guardalo en esta variable.
         return service.obtenerStock(id);
     }
 
     @DeleteMapping("/{id}/eliminar")
-    public void eliminarProducto(@PathVariable int id){
+    public void eliminarProducto(@PathVariable int id) {
         service.eliminarProducto(id);
     }
 
@@ -56,9 +56,16 @@ public class ProductoController {
     // PathVariable → toma el id desde la URL
     // RequestParam → toma el valor desde el query param (?precioNuevo=)
     @PutMapping("/{id}/modificarPrecio")
-    public void modificarPrecio(@PathVariable int id, @RequestParam double precioNuevo){
+    public void modificarPrecio(@PathVariable int id, @RequestParam double precioNuevo) {
         service.modificarPrecio(id, precioNuevo);
     }
+
+    @GetMapping("/obtenerProducto/{id}")
+    public Producto devolverProductoPorId(@PathVariable int id){
+
+        return service.devolverProductoPorId(id);
+    }
+
 
 
 }

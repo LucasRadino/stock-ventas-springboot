@@ -1,5 +1,6 @@
 package com.radino.practicando.service;
 
+import com.radino.practicando.model.Producto;
 import com.radino.practicando.model.Venta;
 import com.radino.practicando.repository.ProductoRepository;
 import com.radino.practicando.repository.VentaRepository;
@@ -41,5 +42,29 @@ public class VentaService {
         return ventaRepo.listarVentas();
     }
 
+    public Venta devolverVentaPorId(int id){
+
+        return ventaRepo.devolverVentaPorId(id);
+    }
+
+
+    public void eliminarVenta(int id){
+
+        // Buscar la venta
+        Venta venta = ventaRepo.devolverVentaPorId(id);
+
+        // Buscar el producto asociado a esa venta
+        Producto producto = productoRepo.devolverProductoPorId(venta.getProductoId());
+
+        // Calcular el nuevo stock
+        int nuevoStock = producto.getStock() + venta.getCantidad();
+
+        // Actualizar el stock
+        productoRepo.actualizarStock(producto.getId(), nuevoStock);
+
+
+        // Eliminar la venta
+        ventaRepo.eliminarVenta(id);
+    }
 
 }

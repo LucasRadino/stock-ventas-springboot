@@ -78,7 +78,26 @@ public class ProductoRepository {
         jdbcTemplate.update(sql, nuevoStock, id);
     }
 
+    public Producto devolverProductoPorId(int id){
 
+        String sql = "SELECT * FROM producto WHERE id = ?";
+
+        return jdbcTemplate.queryForObject(sql, new RowMapper<Producto>() {
+
+            @Override
+            public Producto mapRow(ResultSet rs, int rowNum) throws SQLException{
+
+                return new Producto(
+
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getDouble("precio"),
+                        rs.getInt("stock")
+
+                );
+            }
+        }, id);
+    }
 
 
 

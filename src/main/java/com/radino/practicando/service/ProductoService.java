@@ -35,4 +35,10 @@ public class ProductoService {
     public void modificarPrecio(int id, double precioNuevo){
         repo.modificarPrecio(id, precioNuevo);
     }
+
+    public Producto devolverProductoPorId(int id){
+        return repo.devolverProductoPorId(id);
+    }
+
+
 }
