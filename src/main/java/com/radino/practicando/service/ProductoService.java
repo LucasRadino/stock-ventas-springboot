@@ -40,5 +40,8 @@ public class ProductoService {
         return repo.devolverProductoPorId(id);
     }
 
+    public List<Producto> listarProductosPorNombre(String nombre){
+        return repo.litarProductosPorNombre(nombre);
+    }
 
 }

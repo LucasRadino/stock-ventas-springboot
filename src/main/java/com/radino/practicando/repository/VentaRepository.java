@@ -73,5 +73,23 @@ public class VentaRepository {
     }
 
 
+    public List<Venta> listarVentasDeUnProducto(int idProducto){
+
+        String sql = "SELECT * FROM venta WHERE producto_id = ?";
+
+        return jdbcTemplate.query(sql, new RowMapper<Venta>() {
+            @Override
+            public Venta mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Venta(
+                        rs.getInt("id"),
+                        rs.getInt("producto_id"),
+                        rs.getInt("cantidad"),
+                        rs.getTimestamp("fecha").toLocalDateTime()
+                );
+            }
+        }, idProducto);
+    }
+
+
 
 }

@@ -100,5 +100,23 @@ public class ProductoRepository {
     }
 
 
+    public List<Producto> litarProductosPorNombre(String nombre){
+
+        String sql = "SELECT * FROM producto WHERE nombre LIKE ?";
+
+        return jdbcTemplate.query(sql, new RowMapper<Producto>() {
+            @Override
+            public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Producto(
+
+                        rs.getInt("id"),
+                        rs.getString("nombre"),
+                        rs.getDouble("precio"),
+                        rs.getInt("stock")
+                );
+            }
+        }, "%" + nombre + "%");
+    }
+
 
 }

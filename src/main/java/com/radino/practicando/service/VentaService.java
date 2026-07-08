@@ -67,4 +67,10 @@ public class VentaService {
         ventaRepo.eliminarVenta(id);
     }
 
+
+    public List<Venta> listarVentasDeUnProducto(int idProducto){
+
+        return ventaRepo.listarVentasDeUnProducto(idProducto);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.radino.practicando.controller;
 import com.radino.practicando.model.Producto;
 import com.radino.practicando.repository.ProductoRepository;
 import com.radino.practicando.service.ProductoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class ProductoController {
 
     //Sirve para decir: “Este méodo responde a peticiones HTTP POST”
     @PostMapping("/crear")
-    public void crearProducto(@RequestBody Producto p) { //Sirve para decir: “Tomá el JSON que llega en el body y convertílo a un objeto Producto”
+    public void crearProducto(@Valid @RequestBody Producto p) { //Sirve para decir: “Tomá el JSON que llega en el body y convertílo a un objeto Producto”
 
         service.crearProducto(p);
     }
@@ -67,5 +68,10 @@ public class ProductoController {
     }
 
 
+    @GetMapping("/listarProductosPorNombre")
+    public List<Producto> listarProductosPorNombre(@RequestParam String nombre){
+
+        return service.listarProductosPorNombre(nombre);
+    }
 
 }

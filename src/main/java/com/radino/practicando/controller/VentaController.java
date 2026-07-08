@@ -41,6 +41,11 @@ public class VentaController {
     }
 
 
+    @GetMapping("listarVentasPorProducto/{idProducto}")
+    public List<Venta> listarVentasDeUnProducto(@PathVariable int idProducto){
+
+        return ventaService.listarVentasDeUnProducto(idProducto);
+    }
 
 
 
