@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,6 @@ public class ProductoRepository {
         String sql = "insert into producto (nombre, precio, stock) values (?, ?, ?)";
         jdbcTemplate.update(sql, p.getNombre(), p.getPrecio(), p.getStock());
     }
-
 
     public List<Producto> listarProductos(){
 
@@ -99,8 +99,7 @@ public class ProductoRepository {
         }, id);
     }
 
-
-    public List<Producto> litarProductosPorNombre(String nombre){
+    public List<Producto> listarProductosPorNombre(String nombre){
 
         String sql = "SELECT * FROM producto WHERE nombre LIKE ?";
 
@@ -117,6 +116,4 @@ public class ProductoRepository {
             }
         }, "%" + nombre + "%");
     }
-
-
 }

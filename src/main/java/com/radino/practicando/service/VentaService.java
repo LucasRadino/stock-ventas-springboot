@@ -1,10 +1,16 @@
 package com.radino.practicando.service;
 
+import com.radino.practicando.dto.ProductoResponse;
+import com.radino.practicando.dto.VentaRequest;
+import com.radino.practicando.dto.VentaResponse;
+import com.radino.practicando.exception.StockInsuficienteException;
+import com.radino.practicando.exception.VentaNoEncontradaException;
 import com.radino.practicando.model.Producto;
 import com.radino.practicando.model.Venta;
 import com.radino.practicando.repository.ProductoRepository;
 import com.radino.practicando.repository.VentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,58 +25,106 @@ public class VentaService {
     @Autowired
     ProductoRepository productoRepo;
 
-    public void crearVenta(Venta v){
+    public void crearVenta(VentaRequest request){
 
-        v.setFecha(LocalDateTime.now());
+        // Crear una nueva venta con los datos recibidos del cliente
+        Venta venta = new Venta();
 
-        int stockActual = productoRepo.obtenerStock(v.getProductoId());
+        // Pasar los datos del DTO Request hacia la entidad Venta
+        venta.setProductoId(request.getProductoId());
+        venta.setCantidad(request.getCantidad());
+        venta.setFecha(LocalDateTime.now());
 
-        if(v.getCantidad() > stockActual){
-            throw new RuntimeException("Stock insuficiente");
+        // Obtener stock actual del producto
+        int stockActual = productoRepo.obtenerStock(venta.getProductoId());
+
+        // Validar que haya stock suficiente
+        if(venta.getCantidad() > stockActual){
+
+            throw new StockInsuficienteException(
+                    "Stock insuficiente"
+            );
         }
 
-        int nuevoStock = stockActual - v.getCantidad();
+        // Calcular nuevo stock después de la venta
+        int nuevoStock = stockActual - venta.getCantidad();
 
-        productoRepo.actualizarStock(v.getProductoId(), nuevoStock);
+        // Actualizar stock del producto
+        productoRepo.actualizarStock(
+                venta.getProductoId(),
+                nuevoStock
+        );
 
-        ventaRepo.crearVenta(v);
+        // Guardar venta en base de datos
+        ventaRepo.crearVenta(venta);
     }
 
 
-    public List<Venta> listarVentas(){
+    public List<VentaResponse> listarVentas(){
 
-        return ventaRepo.listarVentas();
+        return ventaRepo.listarVentas()
+                .stream()
+                .map(this::convertirAResponse)
+                .toList();
     }
 
-    public Venta devolverVentaPorId(int id){
+    public VentaResponse devolverVentaPorId(int id){
 
-        return ventaRepo.devolverVentaPorId(id);
+        try{
+
+            Venta venta = ventaRepo.devolverVentaPorId(id);
+
+            return convertirAResponse(venta);
+
+
+        }catch (EmptyResultDataAccessException e){
+
+            throw new VentaNoEncontradaException(
+                    "No existe una venta con id " + id
+            );
+        }
     }
-
 
     public void eliminarVenta(int id){
 
-        // Buscar la venta
+        // Buscar la venta real desde el Repository
         Venta venta = ventaRepo.devolverVentaPorId(id);
 
         // Buscar el producto asociado a esa venta
-        Producto producto = productoRepo.devolverProductoPorId(venta.getProductoId());
+        Producto producto = productoRepo.devolverProductoPorId(
+                venta.getProductoId()
+        );
 
-        // Calcular el nuevo stock
+        // Devolver nuevamente el stock vendido
         int nuevoStock = producto.getStock() + venta.getCantidad();
 
-        // Actualizar el stock
-        productoRepo.actualizarStock(producto.getId(), nuevoStock);
+        // Actualizar stock del producto
+        productoRepo.actualizarStock(
+                producto.getId(),
+                nuevoStock
+        );
 
-
-        // Eliminar la venta
+        // Eliminar venta
         ventaRepo.eliminarVenta(id);
     }
 
 
-    public List<Venta> listarVentasDeUnProducto(int idProducto){
+    public List<VentaResponse> listarVentasDeUnProducto(int idProducto){
 
-        return ventaRepo.listarVentasDeUnProducto(idProducto);
+        return ventaRepo.listarVentasDeUnProducto(idProducto)
+                .stream()
+                .map(this::convertirAResponse)
+                .toList();
+    }
+
+    private VentaResponse convertirAResponse(Venta venta){
+
+        return new VentaResponse(
+                venta.getId(),
+                venta.getProductoId(),
+                venta.getCantidad(),
+                venta.getFecha()
+        );
     }
 
 }

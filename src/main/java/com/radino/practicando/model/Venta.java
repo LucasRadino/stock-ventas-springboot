@@ -1,8 +1,5 @@
 package com.radino.practicando.model;
 
-
-import jakarta.validation.constraints.PositiveOrZero;
-
 import java.time.LocalDateTime;
 
 public class Venta {
@@ -10,8 +7,6 @@ public class Venta {
     //ATRIBUTOS
     private int id;
     private int productoId;
-
-    @PositiveOrZero(message = "La cantidad no puede ser negativa")
     private int cantidad;
     private LocalDateTime fecha;
     //CONSTRUCTORES

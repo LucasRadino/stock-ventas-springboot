@@ -43,4 +43,30 @@ public class GlobalExceptionHandler {
         //body(errores) envía el detalle de los errores en formato JSON
         return ResponseEntity.badRequest().body(errores);
     }
+
+    //@ExceptionHandler → captura la excepción StockInsuficienteException
+    //Cuando se lance esta excepción, Spring ejecutará este método automáticamente
+    //Devuelve un código HTTP 400 junto con el mensaje del error
+    @ExceptionHandler(StockInsuficienteException.class)
+    public ResponseEntity<String> manejarStockInsuficiente(StockInsuficienteException e){
+
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+
+    //@ExceptionHandler → captura la excepción ProductoNoEncontradoException
+    //Devuelve código HTTP 404 cuando el producto no existe
+    @ExceptionHandler(ProductoNoEncontradoException.class)
+    public ResponseEntity<String> manejarProductoNoEncontrado(ProductoNoEncontradoException e){
+
+        return ResponseEntity.status(404).body(e.getMessage());
+    }
+
+    @ExceptionHandler(VentaNoEncontradaException.class)
+    public ResponseEntity<String> manejarVentaNoEncontrada(VentaNoEncontradaException e){
+
+        return ResponseEntity.status(404).body(e.getMessage());
+
+    }
+
 }
